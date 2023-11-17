@@ -1,6 +1,6 @@
 import csv
 
-with open("TX_LoRa.csv","r") as csv_file:
+with open("TX.csv","r") as csv_file:
     file=csv.reader(csv_file,delimiter=";")
 
     data=[]
