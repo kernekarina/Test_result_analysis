@@ -54,18 +54,15 @@ power_cond1=[]
 for i in range(1,len(cond_1)):
     power_cond1.append(float(cond_1[i][5]))
 
-media_cond1 = np.mean(power_cond1)
-variancia_cond1 = np.var(power_cond1)
-std_dev_cond1 = np.std(power_cond1)
+def mean(x):
+    mean=np.mean(x)
+    return mean
 
-print('Length of the sample with condition 1:',len(cond_1))
-print('Mean (Average) of condition 1:', media_cond1)
-print('Variance of condition 1:', variancia_cond1)
-print('Standard deviation of condition 1:', std_dev_cond1)
+mean_cond1=mean(power_cond1)
+print(mean_cond1)
 
 
-plt.bar([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],power_cond1)
-plt.show()
+
 
 
 #print(variance(power_cond1))
