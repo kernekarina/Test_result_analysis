@@ -19,10 +19,10 @@ ts = stats.t.ppf(alpha, gl)
 print(f'O valor de t é {ts}')
 
 # Média amostral
-x_barra = 0.08682968421052632
+x_barra = 0.08682
 
 # desvio amostral
-s = 0.0016024881000504577
+s = 0.001602
 
 # 
 tol = ts*s/(math.sqrt(n))
