@@ -4,50 +4,49 @@ import numpy as np
 from scipy import stats
 import math
 
+# Number of conditions
+num_conditions = 40
+# Data storage for means and confidence intervals
+means = []
+conf_intervals = []
 
-#parameters of condition 1
-#measured power
-power_cond1=[]
-for i in range(1,len(TX_data.cond_1)):
-    power_cond1.append(float(TX_data.cond_1[i][5]))
+for condition_num in range(1, num_conditions + 1):
+    # Assuming TX_data.cond_1, TX_data.cond_2, ..., TX_data.cond_40 exist
+    condition_data = getattr(TX_data, f"cond_{condition_num}")
 
-media_cond1 = np.mean(power_cond1) 
-variancia_cond1 = np.var(power_cond1)
-std_dev_cond1 = np.std(power_cond1)
+    # Extract power values for the current condition
+    power_values = [float(row[5]) for row in condition_data[1:]]
 
-# Numero de amostras
-n = len(power_cond1)
+    # Calculate parameters for the current condition
+    x_barra = round(np.mean(power_values), 4)
+    variancia = round(np.var(power_values), 4)
+    std_dev = round(np.std(power_values), 4)
 
-# Grau de liberdade t-student
-gl = n - 1
+    # Calculate t-statistic and confidence interval
+    n = len(power_values)
+    gl = n - 1
+    # Nível de confiança
+    p = 0.90
+    # Complementar
+    alpha = 1 - p
+    ts = stats.t.ppf(alpha, gl)
+    tol = round(ts * std_dev / (math.sqrt(n)), 4)
 
-# Nível de confiança
-p = 0.90
+    # Store means and confidence intervals
+    means.append(x_barra)
+    conf_intervals.append(tol)
 
-# Complementar
-alpha = 1 - p
-#proba = 1 - alpha/2
+    # Print the results for the current condition
+    print(f'Parameters for Condition {condition_num}:')
+    print(f'Mean: {x_barra}')
+    print(f'Variance: {variancia}')
+    print(f'Standard Deviation: {std_dev}')
+    print(f'Confidence Interval: {x_barra} +- {tol}\n')
 
-# Valor tabela student
-ts = stats.t.ppf(alpha, gl)
-print(f'O valor de t é {ts}')
-
-# Média amostral
-x_barra = media_cond1
-
-# desvio amostral
-s = std_dev_cond1
-
-# 
-tol = ts*s/(math.sqrt(n))
-# 
-print(f'O intervalo de confiança é {x_barra} +- {tol}')
-
-print('Length of the sample with condition 1:',n)
-print('Mean (Average) of condition 1:', media_cond1)
-print('Variance of condition 1:', variancia_cond1)
-print('Standard deviation of condition 1:', std_dev_cond1)
-
-
-#plt.bar([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],power_cond1)
-#plt.show()
+# Plotting
+conditions = range(1, num_conditions + 1)
+plt.bar(conditions, means)
+plt.xlabel('Conditions')
+plt.ylabel('Mean')
+plt.title('Means for Conditions')
+plt.show()
